@@ -1,0 +1,18 @@
+Excel Example
+
+I have been assigned the task of ranking and reporting on the best foosball
+players based on data input into a Microsoft Excel spreadsheet. I am given
+a spreadsheet containing a players name, the shot they attempted and whether
+a goal was scored.  
+
+I know the data was collected by individuals watching the foosball game in some
+cases the observer didn't pay attention to the shot so they didn't record the
+shot data.
+
+My task is to create two worksheets and populate as follows:
+
+Worksheet 1: Player Rankings
+Column A: Player Name, Column B: Total Goals Scored
+
+Worksheet 2: Shot Rankings
+Column A: Shot Name, Column B: Total Goals Scored
