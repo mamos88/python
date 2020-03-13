@@ -3,7 +3,7 @@ from collections import defaultdict
 
 # Documentation: https://openpyxl.readthedocs.io/en/stable/
 
-file_name = r"C:\Users\go_ma\eclipse-workspace\excel\src\foosball.xlsx"
+file_name = r"C:\Users\go_ma\eclipse-workspace\python\excel\foosball.xlsx"
 
 
 def populate_dicts(my_sheet, my_dict):
