@@ -1,5 +1,3 @@
-
-
 import openpyxl
 from collections import defaultdict
 
@@ -7,97 +5,54 @@ from collections import defaultdict
 
 file_name = r"C:\Users\go_ma\eclipse-workspace\excel\src\foosball.xlsx"
 
+
+def populate_dicts(my_sheet, my_dict):
+    """Function to read data and populate results dictionaries"""
+    sorted_key_list = (sorted(my_dict, key=my_dict.get, reverse=True))
+    rownum = 2
+    for key in sorted_key_list:
+        my_sheet["A" + str(rownum)].value = key
+        my_sheet["B" + str(rownum)].value = my_dict[key]
+        rownum += 1
+
+
+def create_sheet(sheet_name, index, header_list):
+    """ Function to create sheet and set first row with header values """
+    my_sheet = WB.create_sheet(sheet_name, index)
+    for idx, header in enumerate(header_list):
+        my_sheet.cell(row=1, column=idx + 1).value = header
+    return my_sheet
+
+
 """ Load Workbook """
-wb = openpyxl.load_workbook(file_name)
+WB = openpyxl.load_workbook(file_name)
 
 """ Open Sheet """
-sheet = wb['Foosball Data']
+SHEET = WB['Foosball Data']
 
 """ Create Objects to Store Results """
-player_dict = defaultdict(int)
-shot_dict = defaultdict(int)
+PLAYER_DICT = defaultdict(int)
+SHOT_DICT = defaultdict(int)
 
 """ Read data from columns, count players and goals scored """
-for row in range(2, sheet.max_row + 1):
-    player = sheet["A" + str(row)].value
-    shot = sheet["B" + str(row)].value
+for row in range(2, SHEET.max_row + 1):
+    player = SHEET["A" + str(row)].value
+    shot = SHEET["B" + str(row)].value
     if len(shot) <= 1:
         shot = "Unknown"
-    goal = sheet["C" + str(row)].value
+    goal = SHEET["C" + str(row)].value
     if goal:
-        player_dict[player] += 1
-        shot_dict[shot] += 1
+        PLAYER_DICT[player] += 1
+        SHOT_DICT[shot] += 1
 
-player_sorted_keys = (sorted(player_dict, key=player_dict.get, reverse=True))
-shot_sorted_keys = (sorted(shot_dict, key=shot_dict.get, reverse=True))
+""" Create Worksheet """
+PLAYER_SHEET = create_sheet("Player Sheet", 1, ["player", "Goals Scored"])
+SHOT_SHEET = create_sheet("Shot Sheet", 2, ["Shot", "Goals Scored"])
 
-""" Create Player Worksheet """
-player_sheet = wb.create_sheet('Player Rankings', 1)
+""" Populate dictionaries """
+populate_dicts(PLAYER_SHEET, PLAYER_DICT)
+populate_dicts(SHOT_SHEET, SHOT_DICT)
 
-player_sheet["A1"].value = "Player"
-player_sheet["B1"].value = "Goals Scored"
-
-rownum = 2
-
-""" Populate Player Sheet with Values """ 
-for player_key in player_sorted_keys:
-    player_sheet["A" + str(rownum)].value = player_key
-    player_sheet["B" + str(rownum)].value = player_dict[player_key]
-    rownum += 1
-
-""" Create Shots Worksheet """
-shot_sheet = wb.create_sheet('Shot Statistics', 2)
-
-shot_sheet["A1"].value = "Shot"
-shot_sheet["B1"].value = "Goals Scored"
-
-""" Populate Shot Sheet with Values """ 
-rownum = 2
-for shot_key in shot_sorted_keys:
-    shot_sheet["A" + str(rownum)].value = shot_key
-    shot_sheet["B" + str(rownum)].value = shot_dict[shot_key]
-    rownum += 1
-
-wb.save(file_name)
+WB.save(file_name)
 
 print("Finished")
-
-
-
-
-
-
-
-
-
-
-
-
-
-# import openpyxl
-# 
-# 
-# file_name = r"C:\Users\go_ma\eclipse-workspace\excel\src\foosball.xlsx"
-# 
-# """Loads workbook"""
-# wb = openpyxl.load_workbook(file_name)
-# 
-# """Sets the desired sheet"""
-# sheet = wb['Foosball Data']
-# 
-# """Reads server from column A, looks up the owner in data_from_sysrec and populates column C with owner"""
-# for row in range(2, sheet.max_row + 1):
-#     server = sheet["A" + str(row)].value
-#     try:
-#         project_name = server.split("-")[1].split(".")[0]
-#     except:
-#         pass
-#     try:
-#         owner = data_from_sysrec[project_name]
-#     except KeyError:
-#         owner = "Unknown"
-#     sheet["C" + str(row)] = owner
-#      
-# wb.save(file_name)
-# 
-# print("Finished")
